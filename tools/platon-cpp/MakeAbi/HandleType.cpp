@@ -243,18 +243,6 @@ json::Value MakeAbi::handleEvent(DISubprogram* SP, json::Value Params,
 
   if (RetType != nullptr) report_fatal_error("event can not hava return value");
 
-  int i = 1;
-  for (auto& elem : *Params.getAsArray()) {
-    Object* obj = elem.getAsObject();
-    auto name = obj->get("name")->getAsString().getValue();
-    auto pos = name.find_first_of("arg");
-    if (pos == 0) {
-      json::Value n = "arg" + std::to_string(i);
-      (*obj)["name"] = n;
-      i++;
-    }
-  }
-
   return Object{{"name", SP->getName()},
                 {"input", Params},
                 {"type", "Event"},
